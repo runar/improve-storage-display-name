@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin name="Improve Storage Configurations Display Name" version_long="10000" version_human="1.0.0" author="Runar Skaare Tveiten" website="" update_check="https://raw.githubusercontent.com/runar/invision-updates/master/improve-storage-display-name.json"><hooks><hook type="C" class="\IPS\File\Amazon" filename="ipsFileAmazon"><![CDATA[//<?php
+
+/* To prevent PHP errors (extending class does not exist) revealing path */
+if ( !\defined( '\IPS\SUITE_UNIQUE_KEY' ) )
+{
+	exit;
+}
+
+class hook77 extends _HOOK_CLASS_
+{
+	/**
+	* Display name
+	*
+	* @param array $settings Configuration settings
+	* @return string
+	*/
+	public static function displayName( $settings )
+	{
+		try
+		{
+			if ( ! empty( $settings['bucket_path'] ) )
+			{
+				$settings['bucket'] .= "/${settings['bucket_path']}";
+			}
+			return parent::displayName( $settings );
+		}
+		catch ( \RuntimeException $e )
+		{
+			if ( method_exists( get_parent_class(), __FUNCTION__ ) )
+			{
+				return \call_user_func_array( 'parent::' . __FUNCTION__, \func_get_args() );
+			}
+			else
+			{
+				throw $e;
+			}
+		}
+	}
+}
+]]></hook></hooks><htmlFiles/><cssFiles/><jsFiles/><resourcesFiles/><lang/><versions><version long="10000" human="1.0.0"><![CDATA[//<?php
+
+
+/* To prevent PHP errors (extending class does not exist) revealing path */
+if ( !\defined( '\IPS\SUITE_UNIQUE_KEY' ) )
+{
+	header( ( isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden' );
+	exit;
+}
+
+/**
+ * Install Code
+ */
+class ips_plugins_setup_install
+{
+	/**
+	 * ...
+	 *
+	 * @return	array	If returns TRUE, upgrader will proceed to next step. If it returns any other value, it will set this as the value of the 'extra' GET parameter and rerun this step (useful for loops)
+	 */
+	public function step1()
+	{
+		
+
+		return TRUE;
+	}
+	
+	// You can create as many additional methods (step2, step3, etc.) as is necessary.
+	// Each step will be executed in a new HTTP request
+}]]></version></versions></plugin>
